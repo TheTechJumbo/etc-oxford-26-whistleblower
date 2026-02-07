@@ -38,6 +38,9 @@ Copy `.env.example` to `.env` and fill in:
 - `FLARE_CONTRACT_REGISTRY` (Coston2 address for FlareContractRegistry)
 - Optional: `FDC_HUB_ADDRESS`, `RELAY_ADDRESS`
 
+If you don’t want to put keys in `.env`, you can use `keys.json` instead.
+Create it from `keys.example.json` and keep it out of git.
+
 If you don’t know addresses, you can pull them from Flare’s periphery artifacts after install.
 
 ### 3) Deploy contracts

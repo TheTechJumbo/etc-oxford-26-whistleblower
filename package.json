@@ -10,8 +10,8 @@
     "fdc:attest:anchor": "hardhat run scripts/fdc/attestAndAnchor.ts --network coston2"
   },
   "dependencies": {
-    "@flarenetwork/flare-periphery-contract-artifacts": "^0.3.4",
-    "@flarenetwork/flare-periphery-contracts": "^0.3.4",
+    "@flarenetwork/flare-periphery-contract-artifacts": "^0.1.36",
+    "@flarenetwork/flare-periphery-contracts": "^0.1.36",
     "dotenv": "^16.4.5",
     "ethers": "^6.12.1"
   },
