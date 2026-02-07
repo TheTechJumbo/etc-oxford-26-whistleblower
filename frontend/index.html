@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FlareFLR MVP — Privacy-First Whistleblowing</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">FlareFLR MVP</p>
+        <h1>Privacy-First Whistleblowing on Flare</h1>
+        <p class="lede">
+          Client-side encryption, metadata-minimal attestations, and tamper-evident anchoring.
+          This demo runs fully in-browser with mock FDC attestation and a simulated on-chain log.
+        </p>
+      </header>
+
+      <section class="panel" id="submit-panel">
+        <h2>1) Anonymous Submission</h2>
+        <label class="field">
+          <span>Report (plaintext, never leaves your browser)</span>
+          <textarea id="reportInput" rows="6" placeholder="Describe the incident..."></textarea>
+        </label>
+        <label class="field">
+          <span>Report type</span>
+          <select id="reportType">
+            <option value="fraud">Fraud</option>
+            <option value="harassment">Harassment</option>
+            <option value="safety">Safety</option>
+            <option value="corruption">Corruption</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button id="encryptBtn">Encrypt & Create Attestation</button>
+          <button id="clearBtn" class="ghost">Clear</button>
+        </div>
+        <div class="output-grid">
+          <div>
+            <h3>Encrypted Payload (ciphertext)</h3>
+            <textarea id="ciphertextOutput" rows="6" readonly></textarea>
+            <label class="field compact">
+              <span>IV (base64)</span>
+              <input id="ivOutput" type="text" readonly />
+            </label>
+            <button id="downloadCipherBtn" class="ghost">Download ciphertext JSON</button>
+          </div>
+          <div>
+            <h3>Private Key (keep offline)</h3>
+            <textarea id="keyOutput" rows="6" readonly></textarea>
+            <p class="hint">Share this only with the trusted reviewer.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="attest-panel">
+        <h2>2) FDC Attestation (Mock)</h2>
+        <div class="output-grid">
+          <div>
+            <h3>Attestation Request</h3>
+            <pre id="attestationRequest" class="code-block"></pre>
+          </div>
+          <div>
+            <h3>Attestation Result</h3>
+            <pre id="attestationResult" class="code-block"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="chain-panel">
+        <h2>3) Tamper-Evident Anchor (Simulated Chain Log)</h2>
+        <div class="actions">
+          <button id="anchorBtn">Anchor to "Chain"</button>
+          <button id="tamperBtn" class="ghost">Tamper Ciphertext</button>
+        </div>
+        <div class="output-grid">
+          <div>
+            <h3>Anchored Entries</h3>
+            <ul id="chainLog" class="list"></ul>
+          </div>
+          <div>
+            <h3>Verification</h3>
+            <label class="field">
+              <span>Paste ciphertext to verify</span>
+              <textarea id="verifyCiphertext" rows="6"></textarea>
+            </label>
+            <button id="verifyBtn">Verify Against Chain</button>
+            <p id="verifyResult" class="hint"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="review-panel">
+        <h2>4) Reviewer Decrypt</h2>
+        <label class="field">
+          <span>Ciphertext (base64)</span>
+          <textarea id="reviewCiphertext" rows="6"></textarea>
+        </label>
+        <label class="field">
+          <span>Key (base64)</span>
+          <textarea id="reviewKey" rows="3"></textarea>
+        </label>
+        <button id="decryptBtn">Decrypt</button>
+        <pre id="reviewPlaintext" class="code-block"></pre>
+      </section>
+
+      <footer class="footer">
+        <p>
+          Disclaimer: This hackathon MVP simulates FDC attestation and on-chain anchoring
+          for demo purposes. It is not production-ready for real whistleblower use.
+        </p>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
