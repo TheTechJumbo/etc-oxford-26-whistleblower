@@ -5,8 +5,8 @@
   "scripts": {
     "compile": "hardhat compile",
     "deploy:flareflr:coston2": "hardhat run scripts/deployFlareFLR.ts --network coston2",
-    "deploy:emitter:sepolia": "hardhat run scripts/deployReportEmitter.ts --network sepolia",
-    "submit:report:sepolia": "hardhat run scripts/submitReportTx.ts --network sepolia",
+    "deploy:emitter:coston": "hardhat run scripts/deployReportEmitter.ts --network coston",
+    "submit:report:coston": "hardhat run scripts/submitReportTx.ts --network coston",
     "fdc:attest:anchor": "hardhat run scripts/fdc/attestAndAnchor.ts --network coston2"
   },
   "dependencies": {

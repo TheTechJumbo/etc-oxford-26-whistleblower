@@ -1,10 +1,11 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 import { interfaceToAbi } from "@flarenetwork/flare-periphery-contract-artifacts";
 import { createRequire } from "module";
 
 type PrepareResponse = {
-  abiEncodedRequest: string;
-  requestHash: string;
+  abiEncodedRequest?: string;
+  requestHash?: string;
 };
 
 type ProofResponse = {
@@ -51,31 +52,60 @@ const VOTING_EPOCH_DURATION_SECONDS = Number(
 );
 
 async function prepareRequest(txHash: string, sourceId: string) {
-  const url = `${VERIFIER_BASE_URL}verifier/EVMTransaction/prepareRequest`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": VERIFIER_API_KEY,
+  const toHex32 = (value: string) => {
+    const hex = Buffer.from(value, "utf8").toString("hex");
+    return `0x${hex.padEnd(64, "0")}`;
+  };
+
+  const url = `${VERIFIER_BASE_URL}verifier/eth/EVMTransaction/prepareRequest`;
+  const payload = JSON.stringify({
+    attestationType: toHex32("EVMTransaction"),
+    sourceId: toHex32(sourceId),
+    requestBody: {
+      transactionHash: txHash,
+      requiredConfirmations: "1",
+      provideInput: true,
+      listEvents: true,
+      logIndices: [],
     },
-    body: JSON.stringify({
-      sourceId,
-      requestBody: {
-        transactionHash: txHash,
-        requiredConfirmations: 1,
-        provideInput: true,
-        listEvents: true,
-        logIndices: [],
-      },
-    }),
   });
+
+  const postWithRetry = async (attempts: number) => {
+    let lastErr: unknown;
+    for (let i = 0; i < attempts; i++) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      try {
+        const resp = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-KEY": VERIFIER_API_KEY,
+          },
+          body: payload,
+          signal: controller.signal,
+        });
+        return resp;
+      } catch (err) {
+        lastErr = err;
+        await new Promise((resolve) => setTimeout(resolve, 1500 * (i + 1)));
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+    throw lastErr;
+  };
+
+  const response = await postWithRetry(3);
 
   if (!response.ok) {
     const text = await response.text();
     throw new Error(`prepareRequest failed: ${response.status} ${text}`);
   }
 
-  return (await response.json()) as PrepareResponse;
+  const json = (await response.json()) as PrepareResponse;
+  console.log("prepareRequest response:", JSON.stringify(json, null, 2));
+  return json;
 }
 
 function calcRoundId() {

@@ -58,16 +58,18 @@ contract FlareFLR {
         require(reportHash != bytes32(0), "empty hash");
         require(reports[reportHash].reportHash == bytes32(0), "already anchored");
 
+        bytes32 sourceTxHash = proof.data.requestBody.transactionHash;
+
         reports[reportHash] = Report({
             reportHash: reportHash,
-            sourceTxHash: body.transactionHash,
+            sourceTxHash: sourceTxHash,
             bucketMs: uint64(block.timestamp / 60) * 60,
             anchoredAt: uint64(block.timestamp),
             reportType: reportType
         });
         reportIndex.push(reportHash);
 
-        emit ReportAnchored(reportHash, body.transactionHash, uint64(block.timestamp / 60) * 60);
+        emit ReportAnchored(reportHash, sourceTxHash, uint64(block.timestamp / 60) * 60);
     }
 
     function getReport(bytes32 reportHash) external view returns (Report memory) {

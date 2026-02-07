@@ -33,7 +33,7 @@ npm install
 ### 2) Configure env
 Copy `.env.example` to `.env` and fill in:
 - `PRIVATE_KEY`
-- `SEPOLIA_RPC_URL`
+- `COSTON_RPC_URL`
 - `COSTON2_RPC_URL`
 - `FLARE_CONTRACT_REGISTRY` (Coston2 address for FlareContractRegistry)
 - Optional: `FDC_HUB_ADDRESS`, `RELAY_ADDRESS`
@@ -45,17 +45,17 @@ If you don’t know addresses, you can pull them from Flare’s periphery artifa
 
 ### 3) Deploy contracts
 ```bash
-npm run deploy:emitter:sepolia
+npm run deploy:emitter:coston
 npm run deploy:flareflr:coston2
 ```
 
-### 4) Submit a report (Sepolia)
+### 4) Submit a report (Coston)
 Use the report hash from the frontend demo (or any `bytes32`).
 ```bash
 export REPORT_HASH=0x...
 export REPORT_TYPE=fraud
 export SOURCE_EMITTER_ADDRESS=0x...
-npm run submit:report:sepolia
+npm run submit:report:coston
 ```
 
 ### 5) Request attestation + anchor (Coston2)

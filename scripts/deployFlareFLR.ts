@@ -1,4 +1,5 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 async function main() {
   const sourceEmitter = process.env.SOURCE_EMITTER_ADDRESS;
